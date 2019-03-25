@@ -15,9 +15,12 @@
 package cmd
 
 import (
+	"encoding/json"
+	"fmt"
 	"log"
 
-	"github.com/devinturner/go-req/httpClient"
+	"github.com/devinturner/go-req/request"
+	"github.com/devinturner/go-req/response"
 	"github.com/devinturner/go-req/util"
 	"github.com/spf13/cobra"
 )
@@ -25,31 +28,41 @@ import (
 var getCmd = &cobra.Command{
 	Use:   "get",
 	Short: "perform GET request",
-	Run: func(cmd *cobra.Command, args []string) {
-		headers, err := cmd.Flags().GetStringSlice("header")
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		uri, err := util.GetURI(args)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		client := httpClient.NewClient(headers)
-		resp, err := client.Get(uri)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		if err := resp.ToJSON(); err != nil {
-			log.Fatal(err)
-		}
-	},
+	Run:   get,
 }
 
 func init() {
 	rootCmd.AddCommand(getCmd)
 
 	getCmd.Flags().StringSliceP("header", "H", []string{""}, "pass in one or more custom headers as key-value pairs")
+}
+
+func get(cmd *cobra.Command, args []string) {
+	headers, err := cmd.Flags().GetStringSlice("header")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Extract uri from args
+	uri, err := util.GetURI(args)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Perform a GET request
+	req := request.NewRequest(headers)
+	raw, err := req.Get(uri)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Parse the response
+	res := response.ParseResponse(raw)
+
+	// Marshal and print response as JSON
+	b, err := json.Marshal(res)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(string(b))
 }

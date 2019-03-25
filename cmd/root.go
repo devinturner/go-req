@@ -31,6 +31,7 @@ which can then be leveraged by tools like "jq" for
 post-processing.`,
 }
 
+// Execute the root command
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
