@@ -5,10 +5,11 @@ import (
 	"net/url"
 )
 
-const ARG_COUNT = 1
+const argCount = 1
 
+// GetURI validates and returns the URI from the passed in arguments
 func GetURI(args []string) (string, error) {
-	if len(args) != ARG_COUNT {
+	if len(args) != argCount {
 		return "", errors.New("invalid number or args")
 	}
 

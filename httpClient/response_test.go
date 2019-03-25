@@ -13,8 +13,8 @@ func TestToJSON(t *testing.T) {
 		errExpected bool
 	}{
 		{"nil -> success", nil, false},
-    {"empty -> success", &Response{}, false},
-    {"partial -> success", &Response{StatusCode:200}, false},
+		{"empty -> success", &Response{}, false},
+		{"partial -> success", &Response{StatusCode: 200}, false},
 	}
 
 	for _, tt := range tests {

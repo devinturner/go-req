@@ -4,6 +4,7 @@ import (
 	"net/http"
 )
 
+// Get build an HTTP GET request and returns a Response and an error
 func (c *Client) Get(uri string) (*Response, error) {
 	cc := &http.Client{}
 
@@ -24,6 +25,7 @@ func (c *Client) Get(uri string) (*Response, error) {
 	return decodeResponse(raw), nil
 }
 
+// decodeResponse takes in an http.Response object and returns a Response
 func decodeResponse(raw *http.Response) *Response {
 	resp := &Response{
 		StatusCode: raw.StatusCode,
@@ -34,6 +36,7 @@ func decodeResponse(raw *http.Response) *Response {
 	return resp
 }
 
+// decodeHeaders takes in an http.Header object and returns a map
 func decodeHeaders(raw http.Header) map[string]string {
 	headers := map[string]string{}
 	for k, v := range raw {
