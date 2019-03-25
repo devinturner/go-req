@@ -15,6 +15,7 @@ func TestDecodeHeaders(t *testing.T) {
 	}{
 		{"nil returns nil", nil, map[string]string{}},
 		{"empty returns empty", http.Header{}, map[string]string{}},
+		{"non-empty returns valid", http.Header{"test": []string{"abc"}}, map[string]string{"test": "abc"}},
 	}
 
 	for _, tt := range tests {
